@@ -28,9 +28,14 @@ This directory contains the configuration to run the Zoho Analytics MCP Server u
     ```
 
 ## Integration
-Once running, this MCP server can be connected to your AI agent.
-For the Python backend, you would typically use an MCP client to connect to this container (or run the MCP server as a subprocess if not using Docker).
-Since we are using Docker, we would connect via an MCP transport (like SSE if supported, or stdio via `docker exec`).
+
+**Note**: The main Swiggy Chatbot application (in `../backend`) now integrates the MCP server directly using the `zoho-analytics-mcp` Python package. It does not require this standalone Docker container to be running.
+
+However, you can still use this directory for:
+1.  **Standalone Testing**: Verifying your Zoho credentials and API access independently.
+2.  **Development**: Debugging MCP server issues in isolation.
+
+If you are running the full chatbot application, please refer to the root [README.md](../README.md).
 
 ## Testing
 To test the connection and API (e.g., `export_data`):

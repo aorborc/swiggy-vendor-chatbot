@@ -19,9 +19,42 @@ chatbot/
 - 🔄 Hybrid approach combining AI with real vendor data
 - 🐳 Docker support for easy deployment
 
-## Setup
+## Quick Start (Docker Compose)
 
-### Backend
+The easiest way to run the application is using Docker Compose.
+
+1.  **Clone the repository**:
+    ```bash
+    git clone https://github.com/aorborc/swiggy-vendor-chatbot.git
+    cd swiggy-vendor-chatbot
+    ```
+
+2.  **Configure Environment**:
+    ```bash
+    cd backend
+    cp .env.example .env
+    # Edit .env with your Google Gemini and Zoho credentials
+    cd ..
+    ```
+
+3.  **Run with Docker Compose**:
+    ```bash
+    docker compose up -d --build
+    ```
+
+4.  **Access the App**:
+    - Frontend: `http://localhost:80`
+    - Backend: `http://localhost:8000`
+
+## Deployment
+
+For deploying to a Digital Ocean Ubuntu server, please see our detailed **[Deployment Guide](DEPLOYMENT.md)**.
+
+## Local Development (Manual Setup)
+
+If you prefer to run services locally without Docker:
+
+### 1. Backend
 
 ```bash
 cd backend
@@ -33,7 +66,7 @@ cp .env.example .env
 python main.py
 ```
 
-### Frontend
+### 2. Frontend
 
 ```bash
 cd frontend
@@ -44,20 +77,11 @@ npm run dev
 **Important Notes**: 
 - The frontend is configured to connect to the backend at `http://localhost:8000`. Make sure the backend is running before starting the frontend.
 - This project uses **Tailwind CSS v3.4.0** with PostCSS. The `postcss.config.js` file is required for Tailwind to work properly.
-- If you encounter styling issues, ensure `tailwindcss@3.4.0` is installed (not v4.x).
 
-### Zoho MCP Server
+### 3. Zoho MCP Server
 
-```bash
-cd zoho-mcp
-python -m venv venv
-source venv/bin/activate
-pip install zoho-analytics-mcp
-cp .env.example .env
-# Edit .env with your Zoho credentials
-```
+The backend is configured to run the Zoho MCP server automatically. Ensure you have the `zoho-analytics-mcp` package installed (included in `backend/requirements.txt`).
 
-See [zoho-mcp/DOCKER_SETUP.md](zoho-mcp/DOCKER_SETUP.md) for Docker deployment instructions.
 
 ## Environment Variables
 
