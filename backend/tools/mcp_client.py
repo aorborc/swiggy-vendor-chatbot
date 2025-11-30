@@ -40,23 +40,42 @@ class ZohoMCPClient:
             
         try:
             # Construct Docker command
-            cmd = [
-                "docker", "run", "-i", "--rm",
-                "-e", f"ACCOUNTS_SERVER_URL={self.accounts_url}",
-                "-e", f"ANALYTICS_SERVER_URL={self.analytics_url}",
-                "-e", f"ANALYTICS_CLIENT_ID={self.client_id}",
-                "-e", f"ANALYTICS_CLIENT_SECRET={self.client_secret}",
-                "-e", f"ANALYTICS_REFRESH_TOKEN={self.refresh_token}",
-                "zohoanalytics/mcp-server:latest"
-            ]
+            # Determine execution mode
+            execution_mode = os.getenv("MCP_EXECUTION_MODE", "docker")
             
+            if execution_mode == "local":
+                # Run directly as a command (installed via pip)
+                cmd = ["zoho-analytics-mcp"]
+                # Pass environment variables to the subprocess
+                env = os.environ.copy()
+                env.update({
+                    "ACCOUNTS_SERVER_URL": self.accounts_url,
+                    "ANALYTICS_SERVER_URL": self.analytics_url,
+                    "ANALYTICS_CLIENT_ID": self.client_id,
+                    "ANALYTICS_CLIENT_SECRET": self.client_secret,
+                    "ANALYTICS_REFRESH_TOKEN": self.refresh_token,
+                })
+            else:
+                # Default: Run via Docker
+                cmd = [
+                    "docker", "run", "-i", "--rm",
+                    "-e", f"ACCOUNTS_SERVER_URL={self.accounts_url}",
+                    "-e", f"ANALYTICS_SERVER_URL={self.analytics_url}",
+                    "-e", f"ANALYTICS_CLIENT_ID={self.client_id}",
+                    "-e", f"ANALYTICS_CLIENT_SECRET={self.client_secret}",
+                    "-e", f"ANALYTICS_REFRESH_TOKEN={self.refresh_token}",
+                    "zohoanalytics/mcp-server:latest"
+                ]
+                env = None
+
             process = subprocess.Popen(
                 cmd,
                 stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 text=True,
-                bufsize=0
+                bufsize=0,
+                env=env
             )
             
             # Initialize
