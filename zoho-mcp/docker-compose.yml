@@ -1,0 +1,18 @@
+services:
+  zoho-mcp:
+    image: zohoanalytics/mcp-server:latest
+    container_name: zoho-analytics-mcp
+    env_file:
+      - .env
+    environment:
+      - ACCOUNTS_SERVER_URL=${ACCOUNTS_SERVER_URL}
+      - ANALYTICS_SERVER_URL=${ANALYTICS_SERVER_URL}
+      - ZOHO_CLIENT_ID=${ZOHO_CLIENT_ID}
+      - ZOHO_CLIENT_SECRET=${ZOHO_CLIENT_SECRET}
+      - ZOHO_REFRESH_TOKEN=${ZOHO_REFRESH_TOKEN}
+    restart: unless-stopped
+    # If the MCP server needs to expose a port or volume, configure it here.
+    # Based on docs, it typically operates via stdio or SSE if configured.
+    # For a standalone container, we might need to check if it exposes an HTTP endpoint for MCP.
+    # Assuming standard MCP behavior, it might need an SSE adapter if accessed remotely.
+    # For now, we'll keep it simple.
