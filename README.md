@@ -48,7 +48,39 @@ The easiest way to run the application is using Docker Compose.
 
 ## Deployment
 
-For deploying to a Digital Ocean Ubuntu server, please see our detailed **[Deployment Guide](DEPLOYMENT.md)**.
+For a fresh Digital Ocean Ubuntu server:
+
+1.  **SSH into your server**:
+    ```bash
+    ssh root@your_server_ip
+    ```
+
+2.  **Run the Setup Script** (installs Docker & dependencies):
+    ```bash
+    curl -sL https://raw.githubusercontent.com/aorborc/swiggy-vendor-chatbot/main/setup.sh | sudo bash
+    ```
+
+3.  **Clone the Repository**:
+    ```bash
+    git clone https://github.com/aorborc/swiggy-vendor-chatbot.git
+    cd swiggy-vendor-chatbot
+    ```
+
+4.  **Configure Secrets**:
+    ```bash
+    cd backend
+    cp .env.example .env
+    nano .env
+    # Paste your API keys and save (Ctrl+X, Y, Enter)
+    cd ..
+    ```
+
+5.  **Launch**:
+    ```bash
+    docker compose up -d --build
+    ```
+
+For more details, see the full **[Deployment Guide](DEPLOYMENT.md)**.
 
 ## Local Development (Manual Setup)
 
