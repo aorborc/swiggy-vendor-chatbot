@@ -38,10 +38,10 @@ python main.py
 ```bash
 cd frontend
 npm install
-cp .env.example .env
-# Edit .env with your backend URL
 npm run dev
 ```
+
+**Note**: The frontend is configured to connect to the backend at `http://localhost:8000`. Make sure the backend is running before starting the frontend.
 
 ### Zoho MCP Server
 
@@ -61,9 +61,6 @@ See [zoho-mcp/DOCKER_SETUP.md](zoho-mcp/DOCKER_SETUP.md) for Docker deployment i
 ### Backend (.env)
 - `GEMINI_API_KEY` - Your Google Gemini API key
 - `MCP_SERVER_URL` - URL to the Zoho MCP server
-
-### Frontend (.env)
-- `VITE_API_URL` - Backend API URL
 
 ### Zoho MCP (.env)
 - `ZOHO_CLIENT_ID` - Zoho OAuth client ID
