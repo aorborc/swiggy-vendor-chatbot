@@ -41,7 +41,10 @@ npm install
 npm run dev
 ```
 
-**Note**: The frontend is configured to connect to the backend at `http://localhost:8000`. Make sure the backend is running before starting the frontend.
+**Important Notes**: 
+- The frontend is configured to connect to the backend at `http://localhost:8000`. Make sure the backend is running before starting the frontend.
+- This project uses **Tailwind CSS v3.4.0** with PostCSS. The `postcss.config.js` file is required for Tailwind to work properly.
+- If you encounter styling issues, ensure `tailwindcss@3.4.0` is installed (not v4.x).
 
 ### Zoho MCP Server
 
@@ -79,7 +82,7 @@ See [zoho-mcp/DOCKER_SETUP.md](zoho-mcp/DOCKER_SETUP.md) for Docker deployment i
 ## Technologies
 
 - **Backend**: Python, FastAPI, Google Gemini AI
-- **Frontend**: React, Vite, TailwindCSS
+- **Frontend**: React 19, Vite 5, Tailwind CSS v3.4.0, PostCSS
 - **Integration**: Zoho Analytics MCP Server
 - **Deployment**: Docker, Docker Compose
 
