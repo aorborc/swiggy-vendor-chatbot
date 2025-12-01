@@ -35,7 +35,7 @@ app.add_middleware(
 # tools_list.extend(zoho_tools)
 
 model = genai.GenerativeModel(
-    model_name='gemini-2.0-flash-exp',
+    model_name='gemini-1.5-flash',
     tools=tools_list, # Currently using mock tools from tools/zoho.py
     system_instruction="""
     You are a helpful assistant for Swiggy's vendor portal.

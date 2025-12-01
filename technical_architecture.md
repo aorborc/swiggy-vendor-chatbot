@@ -28,7 +28,7 @@ The system consists of three main components containerized via Docker:
 
 #### **B. Backend**
 *   **Framework**: Python FastAPI
-*   **AI Model**: Google Gemini 2.0 Flash (Experimental)
+*   **AI Model**: Google Gemini 1.5 Flash
 *   **Responsibilities**:
     *   Handling `/chat` API requests.
     *   Managing conversation context.
@@ -90,14 +90,14 @@ The application is designed to be deployed on a Linux server (e.g., Digital Ocea
 ## 4. Commercials & AI Costs
 
 ### 4.1 AI Model: Google Gemini
-The system currently is configured to use **Gemini 2.0 Flash (Experimental)**.
+The system is configured to use **Gemini 1.5 Flash**.
 
 *   **Performance**: "Flash" models are optimized for high speed and low cost, making them ideal for high-volume tasks like chatbots.
-*   **Current Status**: Experimental (Preview).
+*   **Current Status**: Stable.
 
 ### 4.2 Estimated Costs (INR)
 
-*Note: Pricing is based on the stable **Gemini 1.5 Flash** tier, as 2.0 is experimental. Prices are approximate and subject to exchange rates ($1 USD ≈ ₹84 INR).*
+*Note: Pricing is based on the **Gemini 1.5 Flash** tier. Prices are approximate and subject to exchange rates ($1 USD ≈ ₹84 INR).*
 
 | Item | Unit Cost (USD) | Unit Cost (INR) | Notes |
 | :--- | :--- | :--- | :--- |
