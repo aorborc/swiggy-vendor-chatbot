@@ -37,6 +37,10 @@ However, you can still use this directory for:
 
 If you are running the full chatbot application, please refer to the root [README.md](../README.md).
 
+Additional integration details:
+- The backend reads `VendorPortalReportsList.csv` and turns each row into an MCP export tool with a PAN-aware criteria (default PAN comes from `DEFAULT_VENDOR_PAN` in `backend/.env`).
+- Choose your execution mode via `MCP_EXECUTION_MODE` in `backend/.env`: `local` (use the Python package) or `docker` (use this container).
+
 ## Testing
 To test the connection and API (e.g., `export_data`):
 1.  Ensure `.env` is configured with valid credentials.

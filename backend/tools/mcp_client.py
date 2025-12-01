@@ -38,6 +38,14 @@ class ZohoMCPClient:
             print("Zoho MCP not configured, using mock data")
             return None
             
+    def call_tool(self, tool_name: str, arguments: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+        """
+        Generic method to call a tool on the Zoho MCP server.
+        """
+        if not self.is_configured():
+            print("Zoho MCP not configured")
+            return None
+            
         try:
             # Construct Docker command
             # Determine execution mode
@@ -98,19 +106,14 @@ class ZohoMCPClient:
             process.stdin.write(json.dumps(notify) + "\n")
             process.stdin.flush()
             
-            # Call export_view tool to get invoice data
+            # Call tool
             call_request = {
                 "jsonrpc": "2.0",
                 "id": 2,
                 "method": "tools/call",
                 "params": {
-                    "name": "export_view",
-                    "arguments": {
-                        "workspace_id": self.workspace_id,
-                        "view_id": "234338000004384036",  # Invoice Report view ID
-                        "response_file_format": "json",
-                        "response_file_path": "/tmp/invoice_export.json"
-                    }
+                    "name": tool_name,
+                    "arguments": arguments
                 }
             }
             process.stdin.write(json.dumps(call_request) + "\n")
@@ -122,11 +125,29 @@ class ZohoMCPClient:
             result = json.loads(response)
             if "result" in result:
                 return result["result"]
+            if "error" in result:
+                print(f"MCP Error: {result['error']}")
+                return None
             return None
             
         except Exception as e:
             print(f"Error calling Zoho MCP: {e}")
             return None
+
+    def export_invoice_report(self, vendor_id: str) -> Optional[Dict[str, Any]]:
+        """
+        Export invoice data from the Invoice Report view for a specific vendor.
+        Returns the invoice data or None if not configured.
+        """
+        # This is now a wrapper around the generic call_tool
+        # Note: vendor_id isn't used in the hardcoded view_id call below, 
+        # but kept for compatibility. The new service will handle criteria.
+        return self.call_tool("export_view", {
+            "workspace_id": self.workspace_id,
+            "view_id": "234338000004384036",
+            "response_file_format": "json",
+            "response_file_path": "/tmp/invoice_export.json"
+        })
 
 # Singleton instance
 zoho_mcp_client = ZohoMCPClient()

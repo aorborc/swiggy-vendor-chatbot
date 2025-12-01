@@ -67,13 +67,16 @@ nano .env
 
 Paste your credentials into the `.env` file:
 ```ini
-GOOGLE_API_KEY=your_gemini_key
+GOOGLE_API_KEY=your_google_api_key
 ZOHO_CLIENT_ID=your_client_id
 ZOHO_CLIENT_SECRET=your_client_secret
 ZOHO_REFRESH_TOKEN=your_refresh_token
 ZOHO_WORKSPACE_ID=your_workspace_id
 ACCOUNTS_SERVER_URL=https://accounts.zoho.in
 ANALYTICS_SERVER_URL=https://analyticsapi.zoho.in
+MCP_EXECUTION_MODE=local   # set to docker to run the Zoho MCP server container
+DEFAULT_VENDOR_PAN=AAMCA0969R
+ZOHO_EXPORT_DIR=/tmp
 ```
 Save and exit (`Ctrl+X`, `Y`, `Enter`).
 
@@ -106,6 +109,16 @@ You should see `chatbot-backend` and `chatbot-frontend` running.
 
 Access your application by visiting your server's IP address in a browser:
 `http://your_server_ip`
+
+Optional validation (requires Zoho credentials):
+```bash
+curl http://your_server_ip:8000/health
+docker compose exec backend python3 -m unittest test_zoho_reports.py
+docker compose exec backend python3 - <<'PY'
+from tools.zoho_service import zoho_service
+print(zoho_service.fetch_report("invoice_dashboard_2", pan="AAMCA0969R"))
+PY
+```
 
 ## Troubleshooting
 

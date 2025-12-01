@@ -112,28 +112,45 @@ npm run dev
 
 ### 3. Zoho MCP Server
 
-The backend is configured to run the Zoho MCP server automatically. Ensure you have the `zoho-analytics-mcp` package installed (included in `backend/requirements.txt`).
+The backend calls Zoho Analytics through the `zoho-analytics-mcp` Python package. With `MCP_EXECUTION_MODE=local` (default) no extra container is required. Set `MCP_EXECUTION_MODE=docker` if you prefer to run the Zoho MCP server image instead.
 
 
 ## Environment Variables
 
-### Backend (.env)
-- `GEMINI_API_KEY` - Your Google Gemini API key
-- `MCP_SERVER_URL` - URL to the Zoho MCP server
-
-### Zoho MCP (.env)
-- `ZOHO_CLIENT_ID` - Zoho OAuth client ID
-- `ZOHO_CLIENT_SECRET` - Zoho OAuth client secret
-- `ZOHO_REFRESH_TOKEN` - Zoho OAuth refresh token
-- `ZOHO_ORG_ID` - Your Zoho organization ID
+Edit `backend/.env` (see `.env.example` for defaults):
+- `GOOGLE_API_KEY` - Google Gemini API key
+- `ZOHO_CLIENT_ID`, `ZOHO_CLIENT_SECRET`, `ZOHO_REFRESH_TOKEN`, `ZOHO_WORKSPACE_ID` - Zoho OAuth + workspace
+- `ACCOUNTS_SERVER_URL`, `ANALYTICS_SERVER_URL` - Zoho endpoints (match your data center)
+- `MCP_EXECUTION_MODE` - `local` (use installed package) or `docker` (run `zohoanalytics/mcp-server`)
+- `DEFAULT_VENDOR_PAN` - Fallback PAN when user PAN is missing (demo default: `AAMCA0969R`)
+- `ZOHO_EXPORT_DIR` - Directory for MCP export files (default: system temp)
 
 ## Usage
 
-1. Start the Zoho MCP server
-2. Start the backend server
-3. Start the frontend development server
-4. Open your browser to the frontend URL
-5. Start chatting with the vendor assistant!
+1. Ensure Zoho credentials are set; start the Zoho MCP server only if using `MCP_EXECUTION_MODE=docker` (skip for `local`).
+2. Start the backend server.
+3. Start the frontend development server.
+4. Open your browser to the frontend URL.
+5. Start chatting with the vendor assistant. PAN is taken from the user login; otherwise `DEFAULT_VENDOR_PAN` is used.
+
+**Report catalog & PAN handling**
+- Report definitions are read from `VendorPortalReportsList.csv` at startup; each row becomes a tool (e.g., `get_invoice_dashboard_2`) with its view ID and PAN criteria.
+- Slugs (Report Number order): `za_monthly_summary`, `yearly_summary`, `invoice_dashboard_1`, `invoice_dashboard_2`, `payment_report_1`, `payment_report_2`, `payment_adjustment_at_invoice_level`, `debit_note_dashboard_1`, `debit_note_dashboard_2`, `ar_invoice_report_1`, `ar_invoice_report_2`, `private_url_testing`, `collection_adjustment_at_ar_invoice_level`.
+- Default PAN: `DEFAULT_VENDOR_PAN` (demo: `AAMCA0969R`).
+
+You can exercise a specific report directly:
+```bash
+cd backend
+python3 - <<'PY'
+from tools.zoho_service import zoho_service
+print(zoho_service.fetch_report("invoice_dashboard_2", pan="AAMCA0969R"))
+PY
+```
+Requires valid Zoho credentials; otherwise returns `None`.
+
+**Testing**
+- Criteria/test coverage without live Zoho: `cd backend && python3 -m unittest test_zoho_reports.py`
+- Backend health once running: `curl http://localhost:8000/health`
 
 ## Technologies
 
